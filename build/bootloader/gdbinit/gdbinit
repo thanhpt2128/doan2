@@ -1,0 +1,2 @@
+source D:/LEARNING_AREA/ESP32_PROJ/esp/ina_example/build/bootloader/gdbinit/symbols
+source D:/LEARNING_AREA/ESP32_PROJ/esp/ina_example/build/bootloader/gdbinit/connect

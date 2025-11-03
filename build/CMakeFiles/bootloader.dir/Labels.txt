@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+D:/LEARNING_AREA/ESP32_PROJ/esp/ina_example/build/CMakeFiles/bootloader
+D:/LEARNING_AREA/ESP32_PROJ/esp/ina_example/build/CMakeFiles/bootloader.rule
+D:/LEARNING_AREA/ESP32_PROJ/esp/ina_example/build/CMakeFiles/bootloader-complete.rule
+D:/LEARNING_AREA/ESP32_PROJ/esp/ina_example/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+D:/LEARNING_AREA/ESP32_PROJ/esp/ina_example/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+D:/LEARNING_AREA/ESP32_PROJ/esp/ina_example/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+D:/LEARNING_AREA/ESP32_PROJ/esp/ina_example/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+D:/LEARNING_AREA/ESP32_PROJ/esp/ina_example/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+D:/LEARNING_AREA/ESP32_PROJ/esp/ina_example/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+D:/LEARNING_AREA/ESP32_PROJ/esp/ina_example/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
