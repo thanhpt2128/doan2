@@ -4,6 +4,7 @@
 #include <ina219.h>
 #include <string.h>
 
+
 #include <esp_log.h>
 #include <assert.h>
 #include <sys/time.h>
@@ -12,7 +13,8 @@
 #include "onewire_bus.h"
 #include "ds18b20.h"
 
-
+#define RELAY1   27
+#define RELAY2   26
 #define I2C_PORT 0
 #define I2C_ADDR CONFIG_EXAMPLE_I2C_ADDR
 
@@ -22,25 +24,55 @@
 const static char *TAG = "INA219";
 const static char *TAG1 = "DS18B20";
 
-void task(void *pvParameters)
+/*
+void relay_task(void *pvParameters)
 {
-    //-----------------ina----------------------//
+    // Ban đầu để cả hai chân relay ở chế độ input (trở kháng cao)
+    gpio_set_direction(RELAY1, GPIO_MODE_INPUT);
+    gpio_set_direction(RELAY2, GPIO_MODE_INPUT);
+    while (1)
+    {
+        // Bật relay 1 (RELAY1 output low), RELAY2 input (trở kháng cao)
+        gpio_set_direction(RELAY1, GPIO_MODE_OUTPUT);
+        gpio_set_level(RELAY1, 0);
+        gpio_set_direction(RELAY2, GPIO_MODE_INPUT);
+        ESP_LOGI(TAG, "Relay 1 ON (active low), Relay 2 High-Z");
+        vTaskDelay(pdMS_TO_TICKS(20000));
+
+        // Tắt cả hai relay (đều input - trở kháng cao)
+        gpio_set_direction(RELAY1, GPIO_MODE_INPUT);
+        gpio_set_direction(RELAY2, GPIO_MODE_INPUT);
+        ESP_LOGI(TAG, "Relay 1 OFF, Relay 2 OFF (High-Z)");
+        vTaskDelay(pdMS_TO_TICKS(5000));
+
+        // Bật relay 2 (RELAY2 output low), RELAY1 input (trở kháng cao)
+        gpio_set_direction(RELAY1, GPIO_MODE_INPUT);
+        gpio_set_direction(RELAY2, GPIO_MODE_OUTPUT);
+        gpio_set_level(RELAY2, 0);
+        ESP_LOGI(TAG, "Relay 1 High-Z, Relay 2 ON (active low)");
+        vTaskDelay(pdMS_TO_TICKS(20000));
+
+        // Tắt cả hai relay (đều input - trở kháng cao)
+        gpio_set_direction(RELAY1, GPIO_MODE_INPUT);
+        gpio_set_direction(RELAY2, GPIO_MODE_INPUT);
+        ESP_LOGI(TAG, "Relay 1 OFF, Relay 2 OFF (High-Z)");
+        vTaskDelay(pdMS_TO_TICKS(5000));
+    }
+}
+*/
+void ina219_task(void *pvParameters)
+{
     ina219_t dev;
     memset(&dev, 0, sizeof(ina219_t));
-
     assert(CONFIG_EXAMPLE_SHUNT_RESISTOR_MILLI_OHM > 0);
     ESP_ERROR_CHECK(ina219_init_desc(&dev, I2C_ADDR, I2C_PORT, CONFIG_EXAMPLE_I2C_MASTER_SDA, CONFIG_EXAMPLE_I2C_MASTER_SCL));
     ESP_LOGI(TAG, "Initializing INA219");
     ESP_ERROR_CHECK(ina219_init(&dev));
-
     ESP_LOGI(TAG, "Configuring INA219");
     ESP_ERROR_CHECK(ina219_configure(&dev, INA219_BUS_RANGE_16V, INA219_GAIN_0_125,
                                      INA219_RES_12BIT_1S, INA219_RES_12BIT_1S, INA219_MODE_CONT_SHUNT_BUS));
-
-    ESP_LOGI(TAG, "Calibrating INA219");
-
+       ESP_LOGI(TAG, "Calibrating INA219");
     ESP_ERROR_CHECK(ina219_calibrate(&dev, (float)CONFIG_EXAMPLE_SHUNT_RESISTOR_MILLI_OHM / 1000.0f));
-
     float bus_voltage, shunt_voltage, current, power;
     /*
     //--------------------ds18b20----------------//
@@ -98,17 +130,13 @@ void task(void *pvParameters)
         ESP_ERROR_CHECK(ina219_get_shunt_voltage(&dev, &shunt_voltage));
         ESP_ERROR_CHECK(ina219_get_current(&dev, &current));
         ESP_ERROR_CHECK(ina219_get_power(&dev, &power));
-
         struct timeval tv;
         gettimeofday(&tv, NULL);
         struct tm tm_info;
         localtime_r(&tv.tv_sec, &tm_info);
-
-        // Log ra IDF Monitor
         ESP_LOGI(TAG, "%02d:%02d:%02d VBUS: %.04f V, VSHUNT: %.04f mV, IBUS: %.04f mA, PBUS: %.04f mW",
             tm_info.tm_hour, tm_info.tm_min, tm_info.tm_sec,
             bus_voltage, shunt_voltage * 1000, current * 1000, power * 1000);
-        // Log CSV ra UART (ghi file bằng Tera Term)
         printf("%02d:%02d:%02d,%.04f,%.04f,%.04f,%.04f\n",
             tm_info.tm_hour, tm_info.tm_min, tm_info.tm_sec,
             bus_voltage, shunt_voltage * 1000, current * 1000, power * 1000);
@@ -127,5 +155,7 @@ void task(void *pvParameters)
 void app_main()
 {
     ESP_ERROR_CHECK(i2cdev_init());
-    xTaskCreate(task, "test", configMINIMAL_STACK_SIZE * 8, NULL, 5, NULL);
+    // relay_task chạy trên core 0, ina219_task chạy trên core 1
+   // xTaskCreate(relay_task, "relay_task", configMINIMAL_STACK_SIZE * 2, NULL, 5, NULL);
+    xTaskCreate(ina219_task, "ina219_task", configMINIMAL_STACK_SIZE * 8, NULL, 5, NULL);
 }
