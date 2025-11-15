@@ -1,0 +1,2 @@
+source D:/LEARNING_AREA/ESP32_PROJ/esp/soc_cc_ocv/build/bootloader/gdbinit/symbols
+source D:/LEARNING_AREA/ESP32_PROJ/esp/soc_cc_ocv/build/bootloader/gdbinit/connect

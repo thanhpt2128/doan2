@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "D:/LEARNING_AREA/ESP32_PROJ/esp/soc_cc_ocv/build/CMakeFiles/bootloader"
+		},
+		{
+			"file" : "D:/LEARNING_AREA/ESP32_PROJ/esp/soc_cc_ocv/build/CMakeFiles/bootloader.rule"
+		},
+		{
+			"file" : "D:/LEARNING_AREA/ESP32_PROJ/esp/soc_cc_ocv/build/CMakeFiles/bootloader-complete.rule"
+		},
+		{
+			"file" : "D:/LEARNING_AREA/ESP32_PROJ/esp/soc_cc_ocv/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule"
+		},
+		{
+			"file" : "D:/LEARNING_AREA/ESP32_PROJ/esp/soc_cc_ocv/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule"
+		},
+		{
+			"file" : "D:/LEARNING_AREA/ESP32_PROJ/esp/soc_cc_ocv/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule"
+		},
+		{
+			"file" : "D:/LEARNING_AREA/ESP32_PROJ/esp/soc_cc_ocv/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule"
+		},
+		{
+			"file" : "D:/LEARNING_AREA/ESP32_PROJ/esp/soc_cc_ocv/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule"
+		},
+		{
+			"file" : "D:/LEARNING_AREA/ESP32_PROJ/esp/soc_cc_ocv/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule"
+		},
+		{
+			"file" : "D:/LEARNING_AREA/ESP32_PROJ/esp/soc_cc_ocv/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"bootloader"
+		],
+		"name" : "bootloader"
+	}
+}
